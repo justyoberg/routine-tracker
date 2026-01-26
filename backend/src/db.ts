@@ -1,9 +1,10 @@
+import 'dotenv/config';
 import mongoose from 'mongoose';
 
 const URI =
-  process.env.NODE_ENV == 'test'
-    ? process.env.MONGO_TEST_URI
-    : process.env.MONGOD_PROD_URI;
+  process.env.NODE_ENV == 'dev'
+    ? process.env.MONGO_DEV_URI
+    : process.env.MONGO_PROD_URI;
 
 if (!URI) {
   throw new Error('URI environment variable not set');

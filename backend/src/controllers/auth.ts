@@ -1,13 +1,15 @@
 import express from 'express';
 import { User } from '../models/User.js';
 
-export const usersRouter = express.Router();
+export const authRouter = express.Router();
 
-usersRouter.post('/', async (req, res) => {
-  const { username, first, last, email } = req.body;
+// Registration
+authRouter.post('/register', async (req, res) => {
+  const { username, passwordHash, first, last, email } = req.body;
 
   const user = new User({
     username,
+    passwordHash,
     first,
     last,
     email,
