@@ -5,16 +5,20 @@
   "main": "dist/index.js",
   "description": "Routine tracker backend",
   "scripts": {
-    "start": "tsx src/index.ts",
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production tsx src/index.ts",
+    "build": "NODE_ENV=development tsc",
+    "test": "NODE_ENV=test echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.2.1"
+    "@types/mongoose": "^5.11.96",
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.6",
     "@types/node": "^25.0.10",

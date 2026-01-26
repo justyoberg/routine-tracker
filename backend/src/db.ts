@@ -1,0 +1,20 @@
+import mongoose from 'mongoose';
+
+const URI =
+  process.env.NODE_ENV == 'test'
+    ? process.env.MONGO_TEST_URI
+    : process.env.MONGOD_PROD_URI;
+
+if (!URI) {
+  throw new Error('URI environment variable not set');
+}
+
+export const connectDB = async () => {
+  try {
+    await mongoose.connect(URI);
+    console.log('Connected to MongoDB');
+  } catch (e) {
+    console.log('Mongo connection error: ', e);
+    process.exit(1);
+  }
+};
