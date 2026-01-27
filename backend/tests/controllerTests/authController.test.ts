@@ -1,7 +1,7 @@
 import request from 'supertest';
-import app from '../app';
+import app from '../../src/app';
 import mongoose from 'mongoose';
-import { connectDB, disconnectDB } from '../db';
+import { connectDB, disconnectDB } from '../../src/db';
 
 describe('authController tests', () => {
   beforeAll(async () => {
