@@ -9,7 +9,7 @@ const userSchema = new Schema<IUser>({
   first: { type: String, required: true },
   last: { type: String, required: true },
   email: { type: String, require: true, unique: true },
-  passwordHash: { type: String, required: true, select: false },
+  password: { type: String, required: true, select: false },
   routines: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,14 +19,10 @@ const userSchema = new Schema<IUser>({
 });
 
 userSchema.pre<IUser>('save', async function () {
-  if (!this.isModified('passwordHash')) return;
+  if (!this.isModified('password')) return;
 
-  try {
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    this.passwordHash = await bcrypt.hash(this.passwordHash, salt);
-  } catch (error) {
-    throw error;
-  }
+  const salt = await bcrypt.genSalt(SALT_ROUNDS);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 userSchema.set('toJSON', {

@@ -5,7 +5,7 @@ export interface IUser extends Document {
   first: string;
   last: string;
   email: string;
-  passwordHash: string;
+  password: string;
   routines: IRoutine;
   id: string;
 }

@@ -6,9 +6,7 @@ const URI =
     ? process.env.MONGO_DEV_URI
     : process.env.MONGO_PROD_URI;
 
-if (!URI) {
-  throw new Error('URI environment variable not set');
-}
+if (!URI) throw new Error('URI is undefined');
 
 export const connectDB = async () => {
   try {
