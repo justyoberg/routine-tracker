@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from 'express';
-import { User } from '../models/User.js';
+import { User } from '../models/User';
 
 export const authRouter = express.Router();
 

@@ -1,0 +1,43 @@
+import request from 'supertest';
+import app from '../app';
+import mongoose from 'mongoose';
+import { connectDB, disconnectDB } from '../db';
+
+describe('authController tests', () => {
+  beforeAll(async () => {
+    await connectDB();
+  });
+
+  afterAll(async () => {
+    await disconnectDB();
+  });
+
+  afterEach(async () => {
+    const collections = mongoose.connection.collections;
+    for (const key in collections) {
+      await collections[key]?.deleteMany({});
+    }
+  });
+
+  it('should register a new user', async () => {
+    const payload = {
+      username: 'testuser',
+      password: 'password',
+      first: 'testfirst',
+      last: 'testlast',
+      email: 'test@test.com',
+    };
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send(payload);
+    expect(response.status).toBe(201);
+
+    expect(response.body).toMatchObject({
+      username: payload.username,
+      first: payload.first,
+      last: payload.last,
+      email: payload.email,
+      id: expect.any(String),
+    });
+  });
+});
