@@ -10,10 +10,10 @@ export interface IUser extends Document {
   id: string;
 }
 
-export interface IUserRaw extends Omit<IUser, '_id' | '__v' | 'passwordHash'> {
+export interface IUserRaw extends Omit<IUser, '_id' | '__v' | 'password'> {
   _id?: Types.ObjectId;
   __v?: number;
-  passwordHash?: string;
+  password?: string;
 }
 
 export interface IRoutine extends Document {

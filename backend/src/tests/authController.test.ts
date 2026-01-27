@@ -32,11 +32,12 @@ describe('authController tests', () => {
       .send(payload);
     expect(response.status).toBe(201);
 
-    expect(response.body).toMatchObject({
+    expect(response.body).toEqual({
       username: payload.username,
       first: payload.first,
       last: payload.last,
       email: payload.email,
+      routines: [],
       id: expect.any(String),
     });
   });
