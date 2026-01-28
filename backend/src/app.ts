@@ -1,12 +1,12 @@
 import express from 'express';
 
-import authRouter from './routes/authRouter';
+import authRouter from './routes/auth.router';
 
 const app = express();
 
 app.use(express.json());
-// app.use(middleware)
 
 app.use('/api/auth', authRouter);
 
+// app.use(errorHandler);
 export default app;

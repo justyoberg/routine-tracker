@@ -3,7 +3,7 @@ import app from '../../src/app';
 import mongoose from 'mongoose';
 import { connectDB, disconnectDB } from '../../src/db';
 
-describe('authController tests', () => {
+describe('authentication tests', () => {
   beforeAll(async () => {
     await connectDB();
   });
@@ -12,6 +12,7 @@ describe('authController tests', () => {
     await disconnectDB();
   });
 
+  // Wipe the DB
   afterEach(async () => {
     const collections = mongoose.connection.collections;
     for (const key in collections) {
@@ -19,6 +20,7 @@ describe('authController tests', () => {
     }
   });
 
+  // Registration
   it('should register a new user', async () => {
     const payload = {
       username: 'testuser',
@@ -31,7 +33,6 @@ describe('authController tests', () => {
       .post('/api/auth/register')
       .send(payload);
     expect(response.status).toBe(201);
-
     expect(response.body).toEqual({
       username: payload.username,
       first: payload.first,

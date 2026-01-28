@@ -19,7 +19,7 @@ export const connectDB = async () => {
     await mongoose.connect(URI[NODE_ENV]);
     console.log('Connected to MongoDB');
   } catch (e) {
-    console.log('Mongo connection error: ', e);
+    console.error('Mongo connection error: ', e);
     process.exit(1);
   }
 };
@@ -30,8 +30,8 @@ export const disconnectDB = async () => {
       await mongoose.connection.close();
       console.log('MongoDB connection closed');
     }
-  } catch (err) {
-    console.error('Mongo disconnect error: ', err);
+  } catch (e) {
+    console.error('Mongo disconnect error: ', e);
     process.exit(1);
   }
 };
