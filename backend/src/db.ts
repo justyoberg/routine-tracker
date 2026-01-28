@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import { type NodeEnv, isNodeEnv, requireEnv } from './utils/env';
+import { type NodeEnv, isNodeEnv, requireEnv } from './utils/env.utils';
 
 if (!isNodeEnv(process.env.NODE_ENV)) {
   throw new Error('NODE_ENV is undefined');

@@ -1,8 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
 import type { HydratedDocument, Types } from 'mongoose';
-import type { UserBase } from '../validators/user.validator.js';
-import { USER_CONSTRAINTS } from '../constants/user.constraints.js';
-import { minMessage, maxMessage } from '../utils/model.utils.js';
+import type { UserBase } from '../validators/user.validator';
+import { USER_CONSTRAINTS } from '../constants/user.constraints';
+import { minMessage, maxMessage } from '../utils/model.utils';
 import bcrypt from 'bcrypt';
 
 export interface UserDocument extends HydratedDocument<UserBase> {
@@ -24,36 +24,36 @@ const { USERNAME, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD } = USER_CONSTRAINTS;
 const userSchema = new Schema<UserDocument>({
   username: {
     type: String,
-    required: true,
+    required: [true, `${USERNAME.FIELD} is required`],
     unique: true,
     minlength: [USERNAME.MIN, minMessage(USERNAME)],
     maxlength: [USERNAME.MAX, maxMessage(USERNAME)],
   },
   first: {
     type: String,
-    required: true,
+    required: [true, `${FIRST_NAME.FIELD} is required`],
     minlength: [FIRST_NAME.MIN, minMessage(FIRST_NAME)],
     maxlength: [FIRST_NAME.MAX, maxMessage(FIRST_NAME)],
   },
   last: {
     type: String,
-    required: true,
+    required: [true, `${LAST_NAME.FIELD} is required`],
     minlength: [LAST_NAME.MIN, minMessage(LAST_NAME)],
     maxlength: [LAST_NAME.MAX, maxMessage(LAST_NAME)],
   },
   email: {
     type: String,
-    required: true,
-    unique: true,
+    required: [true, `${EMAIL.FIELD} is required`],
     minlength: [EMAIL.MIN, minMessage(EMAIL)],
     maxlength: [EMAIL.MAX, maxMessage(EMAIL)],
+    unique: true,
   },
   password: {
     type: String,
-    required: true,
-    select: false,
+    required: [true, `${PASSWORD.FIELD} is required`],
     minlength: [PASSWORD.MIN, minMessage(PASSWORD)],
     maxlength: [PASSWORD.MAX, maxMessage(PASSWORD)],
+    select: false,
   },
   routines: [
     {

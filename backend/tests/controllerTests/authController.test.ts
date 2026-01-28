@@ -32,6 +32,9 @@ describe('authentication tests', () => {
     const response = await request(app)
       .post('/api/auth/register')
       .send(payload);
+    if (response.status !== 201) {
+      console.error('Failed:', response.body);
+    }
     expect(response.status).toBe(201);
     expect(response.body).toEqual({
       username: payload.username,
