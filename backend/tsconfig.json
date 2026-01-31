@@ -43,5 +43,5 @@
     "skipLibCheck": true
   },
   "include": ["src"],
-  "exlude": ["tests", "node_modules"]
+  "exclude": ["node_modules", "tests"]
 }
