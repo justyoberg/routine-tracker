@@ -8,6 +8,9 @@ const registerUser = async (req: Request, res: Response) => {
   res.status(201).json(await authServices.createUser(req.body));
 };
 
-//const login = async (req: Request, res: Response) => {};
+// Login
+const login = async (req: Request, res: Response) => {
+  res.status(200).json(await authServices.login(req.body));
+};
 
-export default { registerUser };
+export default { registerUser, login };
