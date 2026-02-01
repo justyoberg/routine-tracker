@@ -15,7 +15,9 @@ const createUser = async (data: UserBase) => {
 };
 
 const login = async (data: Credentials) => {
-  const user = await User.findOne({ user: data.username });
+  const user = await User.findOne({ username: data.username }).select(
+    '+password',
+  );
   if (!user) {
     throw new AuthError('Invalid username or password', 401);
   }
