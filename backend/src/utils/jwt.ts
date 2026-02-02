@@ -1,7 +1,11 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET is undefined');
+}
+
+const JWT_SECRET = process.env.JWT_SECRET;
 const EXPIRATION = '1h';
 
 export interface JwtPayload {

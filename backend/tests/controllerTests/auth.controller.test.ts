@@ -7,6 +7,10 @@ import jwt from 'jsonwebtoken';
 describe('authentication tests', () => {
   beforeAll(async () => {
     await connectDB();
+    const collections = mongoose.connection.collections;
+    for (const key in collections) {
+      await collections[key]?.deleteMany({});
+    }
   });
 
   afterAll(async () => {
@@ -17,7 +21,6 @@ describe('authentication tests', () => {
     await disconnectDB();
   });
 
-  // Registration
   it('should register a new user', async () => {
     const payload = {
       username: 'testuser',
@@ -40,8 +43,36 @@ describe('authentication tests', () => {
     });
   });
 
-  //login
-  it('should login', async () => {
+  it('should prevent registering an existing user', async () => {
+    const payload = {
+      username: 'testuser',
+      password: 'password',
+      first: 'testfirst',
+      last: 'testlast',
+      email: 'test@test.com',
+    };
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send(payload);
+    expect(response.status).toBe(409);
+    expect(response.body.status).toBe('dup_key_error');
+  });
+
+  it('should prevent registering with missing field', async () => {
+    const payload = {
+      username: 'testuser',
+      password: 'password',
+      first: 'testfirst',
+      last: 'testlast',
+    };
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send(payload);
+    expect(response.status).toBe(400);
+    expect(response.body.status).toBe('validation_error');
+  });
+
+  it('should login and contain valid token', async () => {
     const payload = {
       username: 'testuser',
       password: 'password',
@@ -62,4 +93,26 @@ describe('authentication tests', () => {
 
     expect(user.first).toBe('testfirst');
   });
+
+  it('should prevent login with wrong password', async () => {
+    const payload = {
+      username: 'testuser',
+      password: 'wrongpassword',
+    };
+    const response = await request(app).post('/api/auth/login').send(payload);
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('Invalid username or password');
+  });
+
+  it('should prevent login with non-existant user', async () => {
+    const payload = {
+      username: 'doesntexist',
+      password: 'password',
+    };
+    const response = await request(app).post('/api/auth/login').send(payload);
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('Invalid username or password');
+  });
+
+  // TODO: Add logout/token invalidation tests
 });

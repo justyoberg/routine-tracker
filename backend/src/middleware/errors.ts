@@ -10,6 +10,12 @@ const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     });
   }
 
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyPattern)[0];
+    const message = `${field} already exists`;
+    return res.status(409).json({ status: 'dup_key_error', message });
+  }
+
   if (err.name === 'ValidationError') {
     return res.status(400).json({ status: 'db_error', message: err.message });
   }
