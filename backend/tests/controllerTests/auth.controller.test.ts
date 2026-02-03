@@ -23,21 +23,21 @@ describe('authentication tests', () => {
 
   it('should register a new user', async () => {
     const payload = {
-      username: 'testuser',
-      password: 'password',
-      first: 'testfirst',
-      last: 'testlast',
-      email: 'test@test.com',
+      username: 'testuser  ',
+      password: 'password  ',
+      first: 'testfirst  ',
+      last: 'testlast  ',
+      email: 'test@test.com  ',
     };
     const response = await request(app)
       .post('/api/auth/register')
       .send(payload);
     expect(response.status).toBe(201);
     expect(response.body).toEqual({
-      username: payload.username,
-      first: payload.first,
-      last: payload.last,
-      email: payload.email,
+      username: payload.username.trim(),
+      first: payload.first.trim(),
+      last: payload.last.trim(),
+      email: payload.email.trim(),
       routines: [],
       id: expect.any(String),
     });
@@ -45,11 +45,11 @@ describe('authentication tests', () => {
 
   it('should prevent registering an existing user', async () => {
     const payload = {
-      username: 'testuser',
-      password: 'password',
-      first: 'testfirst',
-      last: 'testlast',
-      email: 'test@test.com',
+      username: 'testuser  ',
+      password: 'password  ',
+      first: 'testfirst  ',
+      last: 'testlast  ',
+      email: 'test@test.com  ',
     };
     const response = await request(app)
       .post('/api/auth/register')
@@ -65,6 +65,15 @@ describe('authentication tests', () => {
       first: 'testfirst',
       last: 'testlast',
     };
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send(payload);
+    expect(response.status).toBe(400);
+    expect(response.body.status).toBe('validation_error');
+  });
+
+  it('should prevent registering with all fields missing', async () => {
+    const payload = {};
     const response = await request(app)
       .post('/api/auth/register')
       .send(payload);

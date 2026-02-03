@@ -1,13 +1,25 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { type ZodObject } from 'zod';
+import { type ZodType } from 'zod';
+import { type ValidatedRequest } from '../types/ValidatedRequest';
 
 export const validate =
-  (schema: ZodObject) =>
+  <T extends ZodType<ValidatedRequest>>(schema: T) =>
   async (req: Request, _res: Response, next: NextFunction) => {
-    await schema.parseAsync({
+    const parsed = await schema.parseAsync({
       body: req.body,
       query: req.query,
       params: req.params,
     });
+
+    Object.assign(req.body, parsed.body);
+
+    if (parsed.query) {
+      Object.assign(req.query, parsed.query);
+    }
+
+    if (parsed.params) {
+      Object.assign(req.params, parsed.params);
+    }
+
     next();
   };

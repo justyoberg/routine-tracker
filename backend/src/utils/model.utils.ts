@@ -10,5 +10,5 @@ export const maxMessage = (c: Constraint) => {
 };
 
 export const dynamicZodString = (c: Constraint) => {
-  return z.string().min(c.MIN, minMessage(c)).max(c.MAX, maxMessage(c));
+  return z.string().min(c.MIN, minMessage(c)).max(c.MAX, maxMessage(c)).trim();
 };
