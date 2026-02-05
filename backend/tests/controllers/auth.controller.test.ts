@@ -1,24 +1,14 @@
 import request from 'supertest';
 import app from '../../src/app';
 import mongoose from 'mongoose';
-import { connectDB, disconnectDB } from '../../src/db';
 import jwt from 'jsonwebtoken';
+import { wipeDB } from '../utils/db';
+import { User } from '../../src/models/User';
 
 describe('authentication tests', () => {
   beforeAll(async () => {
-    await connectDB();
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-      await collections[key]?.deleteMany({});
-    }
-  });
-
-  afterAll(async () => {
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-      await collections[key]?.deleteMany({});
-    }
-    await disconnectDB();
+    await wipeDB();
+    await User.syncIndexes();
   });
 
   it('should register a new user', async () => {
